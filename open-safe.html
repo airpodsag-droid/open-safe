@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║  LINKTREE — PÁGINA DE ENTRADA DO FUNIL                  ║
+  ║                                                          ║
+  ║  COMO EDITAR:                                            ║
+  ║  1. NOME DO SITE  → procure "VAULT GIRLS"               ║
+  ║  2. SLOGAN        → procure "Choose your fantasy"       ║
+  ║  3. FOTO PERFIL   → src="FOTO_PERFIL"                   ║
+  ║  4. CADA CARD:                                           ║
+  ║     • href="LINK_PAGINA_X"   → link da página destino   ║
+  ║     • src="IMG_CATEGORIA_X"  → imagem da categoria      ║
+  ║     • .cat-title → nome da categoria                    ║
+  ║     • .cat-sub   → descrição curta                      ║
+  ║     • .cat-tag   → tags coloridas                       ║
+  ╚══════════════════════════════════════════════════════════╝
+-->
+
+<title>VAULT — Select Your Content</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void:         #030206;
+  --void2:        #08060f;
+  --void3:        #0f0c1a;
+  --rose:         #e8195a;
+  --rose-hot:     #ff2d6e;
+  --rose-dim:     #8c0f36;
+  --rose-glow:    rgba(232,25,90,0.13);
+  --violet:       #2d1b69;
+  --silver:       #c8c0d8;
+  --silver-dim:   rgba(200,192,216,0.38);
+  --silver-ghost: rgba(200,192,216,0.08);
+  --border:       rgba(232,25,90,0.18);
+  --border-soft:  rgba(200,192,216,0.1);
+  --text:         #ede8f5;
+  --text-muted:   rgba(237,232,245,0.4);
+  --green:        #00e676;
+  --green-dim:    rgba(0,230,118,0.12);
+  --green-border: rgba(0,230,118,0.22);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--void);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── GRAIN ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── SCANLINES ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── AMBIENT ORBS ── */
+.amb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(130px);
+}
+.amb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(232,25,90,0.07) 0%, transparent 65%);
+  top: -100px; right: -150px;
+}
+.amb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(45,27,105,0.1) 0%, transparent 65%);
+  bottom: 0; left: -100px;
+}
+.amb-3 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(0,230,118,0.03) 0%, transparent 65%);
+  top: 50%; left: 40%;
+}
+
+/* ══════════════════════════════════
+   SECURITY BANNER — topo
+══════════════════════════════════ */
+.sec-banner {
+  width: 100%;
+  background: rgba(0,230,118,0.04);
+  border-bottom: 1px solid var(--green-border);
+  padding: 9px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 20;
+  animation: fadeDown 0.6s cubic-bezier(.16,1,.3,1) both;
+}
+.sec-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--green);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════
+   WRAPPER
+══════════════════════════════════ */
+.page {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 500px;
+  padding: 44px 20px 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ══════════════════════════════════
+   PROFILE
+══════════════════════════════════ */
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 36px;
+  animation: fadeDown 0.8s 0.1s cubic-bezier(.16,1,.3,1) both;
+}
+
+.avatar-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+/* ★ EDITAR: "FOTO_PERFIL" → link da sua foto (ideal: 200x200px quadrada) ★ */
+.avatar {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--rose);
+  display: block;
+  background: var(--void3);
+  box-shadow: 0 0 28px rgba(232,25,90,0.28);
+}
+.avatar-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,25,90,0.28);
+  animation: ringPulse 3s infinite;
+}
+.avatar-ring-2 {
+  position: absolute;
+  inset: -13px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,25,90,0.1);
+  animation: ringPulse 3s 1.2s infinite;
+}
+@keyframes ringPulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(1.06); }
+}
+.verified-badge {
+  position: absolute;
+  bottom: 2px; right: 2px;
+  width: 22px; height: 22px;
+  background: var(--rose);
+  border-radius: 50%;
+  border: 2px solid var(--void);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ★ EDITAR: nome do seu perfil ★ */
+.profile-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 4px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* ★ EDITAR: slogan ★ */
+.profile-bio {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rose-hot);
+  background: rgba(232,25,90,0.08);
+  border: 1px solid rgba(232,25,90,0.22);
+  padding: 5px 16px;
+  border-radius: 100px;
+}
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--rose-hot);
+  box-shadow: 0 0 8px var(--rose-hot);
+  animation: blink 1.6s infinite;
+}
+@keyframes blink {
+  0%,100% { opacity: 1; box-shadow: 0 0 6px var(--rose-hot); }
+  50%      { opacity: 0.3; box-shadow: 0 0 14px var(--rose-hot); }
+}
+
+/* mini trust badges */
+.trust-badges {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  border: 1px solid var(--border-soft);
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--silver-ghost);
+}
+
+/* ══════════════════════════════════
+   DIVIDER
+══════════════════════════════════ */
+.divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0 22px;
+  animation: fadeUp 0.8s 0.3s cubic-bezier(.16,1,.3,1) both;
+}
+.div-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border));
+}
+.div-line.r { background: linear-gradient(90deg, var(--border), transparent); }
+.div-text {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════
+   CATEGORY CARDS
+══════════════════════════════════ */
+.cats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/*
+  ESTRUTURA DE CADA CARD:
+  <a href="LINK_PAGINA_X" class="cat-card">
+    <img src="IMG_CATEGORIA_X" class="cat-img">
+    <div class="cat-content">
+      <div class="cat-title">Nome da Categoria</div>
+      <div class="cat-sub">Descrição curta</div>
+      <div class="cat-tags">
+        <span class="cat-tag hot">Tag Rosa</span>
+        <span class="cat-tag">Tag Normal</span>
+      </div>
+    </div>
+    <div class="cat-arrow">→</div>
+  </a>
+*/
+
+.cat-card {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  background: var(--void2);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: cardIn 0.65s cubic-bezier(.16,1,.3,1) forwards;
+  /* transições suaves */
+  transition:
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    transform 0.22s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+.cat-card:nth-child(1) { animation-delay: 0.35s; }
+.cat-card:nth-child(2) { animation-delay: 0.45s; }
+.cat-card:nth-child(3) { animation-delay: 0.55s; }
+.cat-card:nth-child(4) { animation-delay: 0.65s; }
+.cat-card:nth-child(5) { animation-delay: 0.75s; }
+
+@keyframes cardIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* barra esquerda colorida */
+.cat-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--rose-hot), var(--rose-dim));
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 2;
+}
+
+/* shimmer hover */
+.cat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+    transparent 40%,
+    rgba(232,25,90,0.05) 50%,
+    transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* HOVER — desktop */
+.cat-card:hover {
+  border-color: rgba(232,25,90,0.5);
+  box-shadow:
+    0 0 0 1px rgba(232,25,90,0.08),
+    0 14px 50px rgba(0,0,0,0.55),
+    0 0 40px rgba(232,25,90,0.08);
+  transform: translateY(-3px) scale(1.012);
+}
+.cat-card:hover::before { opacity: 1; }
+.cat-card:hover::after  { opacity: 1; }
+
+/* ACTIVE / TAP — feedback imediato no mobile */
+.cat-card:active {
+  transform: scale(0.972) translateY(1px) !important;
+  border-color: rgba(232,25,90,0.75) !important;
+  box-shadow:
+    0 0 0 2px rgba(232,25,90,0.22),
+    0 4px 20px rgba(232,25,90,0.28) !important;
+  transition: transform 0.08s, box-shadow 0.08s, border-color 0.08s !important;
+}
+.cat-card:active::before { opacity: 1; }
+
+/* ── IMAGEM ──
+   ★ EDITAR: src="IMG_CATEGORIA_X"
+   Tamanho ideal: mínimo 120x120px, formato quadrado ★ */
+.cat-img {
+  width: 96px; height: 96px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--void3);
+  display: block;
+  filter: saturate(0.8) brightness(0.9);
+  transition: filter 0.3s, transform 0.35s cubic-bezier(.34,1.2,.64,1);
+}
+.cat-card:hover .cat-img {
+  filter: saturate(1.15) brightness(1.02);
+  transform: scale(1.05);
+}
+
+.cat-content {
+  flex: 1;
+  padding: 16px 14px;
+  position: relative;
+  z-index: 3;
+}
+
+/* ★ EDITAR: nome da categoria ★ */
+.cat-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.2;
+  transition: color 0.22s;
+}
+.cat-card:hover .cat-title { color: #fff; }
+
+/* ★ EDITAR: descrição curta ★ */
+.cat-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.cat-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.cat-tag {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  background: var(--silver-ghost);
+  transition: all 0.2s;
+}
+.cat-tag.hot {
+  border-color: rgba(232,25,90,0.3);
+  color: var(--rose-hot);
+  background: rgba(232,25,90,0.07);
+}
+.cat-card:hover .cat-tag.hot {
+  background: rgba(232,25,90,0.14);
+  border-color: rgba(232,25,90,0.5);
+}
+
+/* seta */
+.cat-arrow {
+  padding: 0 18px;
+  font-size: 20px;
+  color: var(--rose);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 3;
+  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), color 0.2s;
+}
+.cat-card:hover .cat-arrow {
+  transform: translateX(5px);
+  color: var(--rose-hot);
+}
+.cat-card:active .cat-arrow {
+  transform: translateX(2px) scale(1.2);
+}
+
+/* ══════════════════════════════════
+   RIPPLE ao clicar
+══════════════════════════════════ */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(232,25,90,0.22);
+  transform: scale(0);
+  animation: rippleAnim 0.55s linear;
+  pointer-events: none;
+  z-index: 10;
+}
+@keyframes rippleAnim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ══════════════════════════════════
+   SECURITY SECTION
+══════════════════════════════════ */
+.security-section {
+  width: 100%;
+  margin-top: 30px;
+  background: rgba(0,230,118,0.04);
+  border: 1px solid var(--green-border);
+  border-radius: 6px;
+  padding: 20px 18px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s cubic-bezier(.16,1,.3,1) forwards;
+}
+.sec-title {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.sec-title::before {
+  content: '';
+  display: block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  flex-shrink: 0;
+  animation: blink 2s infinite;
+}
+
+.sec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.sec-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.sec-row-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.sec-row-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--silver);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.sec-row-desc {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+/* SSL badge */
+.ssl-row {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ssl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,230,118,0.07);
+  border: 1px solid var(--green-border);
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.ssl-sub {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+.footer-note {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1.9;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+.footer-note span { color: var(--rose); }
+
+/* ★ EDITAR: href → link do seu Telegram ★ */
+.support-link {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  border: 1px solid var(--border-soft);
+  padding: 10px 22px;
+  border-radius: 100px;
+  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+  opacity: 0;
+  animation: fadeUp 0.8s 1.05s cubic-bezier(.16,1,.3,1) forwards;
+}
+.support-link:hover {
+  border-color: rgba(232,25,90,0.4);
+  color: var(--rose-hot);
+  background: var(--rose-glow);
+  transform: scale(1.04);
+}
+.support-link:active { transform: scale(0.97); }
+.support-link img { width: 16px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE — MOBILE
+══════════════════════════════════ */
+@media (max-width: 480px) {
+  .page { padding: 36px 14px 60px; }
+  .profile-name { font-size: 24px; }
+  .cat-img { width: 82px; height: 82px; }
+  .cat-title { font-size: 15px; }
+  .cat-arrow { padding: 0 14px; font-size: 18px; }
+  .sec-grid { grid-template-columns: 1fr; }
+  .sec-banner { gap: 10px; padding: 8px 12px; }
+  .sec-item { font-size: 9px; }
+  .pay-chip { font-size: 9px; padding: 3px 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="amb amb-1"></div>
+<div class="amb amb-2"></div>
+<div class="amb amb-3"></div>
+
+<!-- ══════════════════════════════════
+     SECURITY BANNER — topo
+══════════════════════════════════ -->
+<div class="sec-banner">
+  <div class="sec-item">🔒 SSL Secured</div>
+  <div class="sec-item">🛡️ No Data Stored</div>
+  <div class="sec-item">👁️ 100% Anonymous</div>
+  <div class="sec-item">✅ Safe Checkout</div>
+</div>
+
+<div class="page">
+
+  <!-- ══════════════════════════════════
+       PERFIL
+  ══════════════════════════════════ -->
+  <div class="profile">
+    <div class="avatar-wrap">
+      <!-- ★ EDITAR: "FOTO_PERFIL" → link da sua foto de perfil (200x200px) ★ -->
+      <img src="https://files.catbox.moe/3bkqdw.jpeg" alt="Profile" class="avatar">
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring-2"></div>
+      <div class="verified-badge">✓</div>
+    </div>
+
+    <!-- ★ EDITAR: nome do perfil ★ -->
+    <div class="profile-name">VAULT GIRLS</div>
+
+    <!-- ★ EDITAR: slogan ★ -->
+    <div class="profile-bio">Choose your fantasy</div>
+
+    <div class="profile-pill">
+      <div class="live-dot"></div>
+      <span class="online-count">Adults Only · +18</span>
+    </div>
+
+    <div class="trust-badges">
+      <div class="trust-badge">🔒 Encrypted</div>
+      <div class="trust-badge">⚡ Instant Access</div>
+      <div class="trust-badge">🕵️ No Tracking</div>
+    </div>
+  </div>
+
+  <!-- DIVISOR -->
+  <div class="divider">
+    <div class="div-line"></div>
+    <span class="div-text">Select your content</span>
+    <div class="div-line r"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CATEGORIAS — 5 cards
+
+       COMO EDITAR CADA CARD:
+       ① href="LINK_PAGINA_X"   → link da página de destino desta categoria
+       ② src="IMG_CATEGORIA_X"  → link da imagem (quadrada, mín 120x120px)
+       ③ .cat-title             → nome da categoria
+       ④ .cat-sub               → descrição curta
+       ⑤ .cat-tag / .cat-tag.hot → tags (hot = rosa, sem hot = cinza)
+  ══════════════════════════════════ -->
+  <div class="cats">
+
+    <!-- ════ CATEGORIA 1 ════ -->
+    <!-- ① ★ EDITAR: link da página ★ -->
+    <a href="https://ofi-pied.vercel.app/site-cp-oficial.html" class="cat-card">
+      <!-- ② ★ EDITAR: imagem da categoria ★ -->
+      <img src="https://files.catbox.moe/d7uynb.jpg" alt="Categoria 1" class="cat-img">
+      <div class="cat-content">
+        <!-- ③ ★ EDITAR: nome ★ -->
+        <div class="cat-title">CP (ONLY)</div>
+        <!-- ④ ★ EDITAR: descrição ★ -->
+        <div class="cat-sub">Exclusive private content</div>
+        <!-- ⑤ ★ EDITAR: tags ★ -->
+        <div class="cat-tags">
+          <span class="cat-tag hot">Exclusive</span>
+          <span class="cat-tag">New 2026</span>
+          <span class="cat-tag">HD</span>
+        </div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </a>
+
+    <!-- ════ CATEGORIA 2 ════ -->
+    <a href="https://ofi-pied.vercel.app/site-mm-oficial.html" class="cat-card">
+      <img src="https://files.catbox.moe/7z6q5f.jpg" alt="Categoria 2" class="cat-img">
+      <div class="cat-content">
+        <div class="cat-title">MOM AND SON (ONLY)</div>
+        <div class="cat-sub">Premium private sessions</div>
+        <div class="cat-tags">
+          <span class="cat-tag hot">Premium</span>
+          <span class="cat-tag">Private</span>
+          <span class="cat-tag">Full Videos</span>
+        </div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </a>
+
+    <!-- ════ CATEGORIA 3 ════ -->
+    <a href="https://ofi-pied.vercel.app/site-fthr-oficial.html" class="cat-card">
+      <img src="https://files.catbox.moe/2gu6py.jpg" alt="Categoria 3" class="cat-img">
+      <div class="cat-content">
+        <div class="cat-title">FATHER AND DOUGTHER (ONLY)</div>
+        <div class="cat-sub">Rare exclusive footage</div>
+        <div class="cat-tags">
+          <span class="cat-tag hot">Rare</span>
+          <span class="cat-tag hot">Exclusive</span>
+          <span class="cat-tag">2026</span>
+        </div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </a>
+
+    <!-- ════ CATEGORIA 4 ════ -->
+    <a href="https://ofi-pied.vercel.app/teen-site.oficial.html" class="cat-card">
+      <img src="https://files.catbox.moe/it4667.jpeg" alt="Categoria 4" class="cat-img">
+      <div class="cat-content">
+        <div class="cat-title">TEENS (ONLY)</div>
+        <div class="cat-sub">Uncensored live recordings</div>
+        <div class="cat-tags">
+          <span class="cat-tag hot">🔥 Hot</span>
+          <span class="cat-tag">Live</span>
+          <span class="cat-tag">Full Length</span>
+        </div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </a>
+
+  <!-- ══════════════════════════════════
+       BLOCO DE SEGURANÇA
+  ══════════════════════════════════ -->
+  <div class="security-section">
+    <div class="sec-title">100% Secure &amp; Anonymous</div>
+    <div class="sec-grid">
+      <div class="sec-row">
+        <div class="sec-row-icon">🔒</div>
+        <div>
+          <div class="sec-row-label">SSL Encrypted</div>
+          <div class="sec-row-desc">256-bit encryption on all pages</div>
+        </div>
+      </div>
+      <div class="sec-row">
+        <div class="sec-row-icon">🕵️</div>
+        <div>
+          <div class="sec-row-label">No Tracking</div>
+          <div class="sec-row-desc">Zero data logged or stored</div>
+        </div>
+      </div>
+      <div class="sec-row">
+        <div class="sec-row-icon">🛡️</div>
+        <div>
+          <div class="sec-row-label">Privacy First</div>
+          <div class="sec-row-desc">Your identity stays private</div>
+        </div>
+      </div>
+      <div class="sec-row">
+        <div class="sec-row-icon">✅</div>
+        <div>
+          <div class="sec-row-label">Safe Checkout</div>
+          <div class="sec-row-desc">Secured &amp; verified via Payhip</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SSL badge -->
+    <div class="ssl-row">
+      <div class="ssl-badge">🔐 SSL Secured</div>
+      <span class="ssl-sub">All pages are encrypted<br>and completely anonymous</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <span>+18</span> · Verified Premium Content · 2026
+  </div>
+
+  <!-- ★ EDITAR: href → link do seu Telegram de suporte ★ -->
+  <a href="https://t.me/Kakarotosuporte" class="support-link" target="_blank" rel="noopener">
+    <img src="https://files.catbox.moe/ml5t53.webp" alt="Support">
+    Support
+  </a>
+
+</div><!-- fim .page -->
+
+<script>
+/* ── RIPPLE ao clicar nos cards ── */
+document.querySelectorAll('.cat-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    ripple.classList.add('ripple');
+    ripple.style.width  = size + 'px';
+    ripple.style.height = size + 'px';
+    ripple.style.left   = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top    = (e.clientY - rect.top  - size / 2) + 'px';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+/* ── ONLINE COUNT dinâmico ── */
+(function(){
+  const el = document.querySelector('.online-count');
+  if (!el) return;
+  const base = 143;
+  const offs = [0,2,-1,3,1,-2,4,0,-1,2];
+  let i = 0;
+  const update = () => {
+    el.textContent = 'Adults Only · +18 · ' + (base + offs[i++ % offs.length]) + ' online';
+  };
+  update();
+  setInterval(update, 2400);
+})();
+</script>
+</body>
+</html>
